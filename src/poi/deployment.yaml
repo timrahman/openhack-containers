@@ -19,10 +19,6 @@ spec:
         ports:
         - containerPort: 80
         env:
-        - name: SQL_USER
-          value: sqladminrDz2161
-        - name: SQL_PASSWORD
-          value: iK8rk1Vg2
         - name: SQL_SERVER
           value: sqlserverrdz2161.database.windows.net
         - name: SQL_DBNAME
@@ -35,3 +31,16 @@ spec:
         #   value: "Development"
         # - name: CONFIG_FILES_PATH
         #   value: "/secrets"
+        volumeMounts:
+        - name: secrets-store-inline
+          mountPath: "/secrets"
+          readOnly: true
+      volumes:
+        - name: secrets-store-inline
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: "sql-creds"
+            nodePublishSecretRef:                       # Only required when using service principal mode
+              name: secrets-store-creds                 # Only required when using service principal mode
