@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-java
+spec:
+  selector:
+    matchLabels:
+      run: user-java
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: user-java
+    spec:
+      containers:
+      - name: user-java
+        image: registryrdz2161.azurecr.io/user-java:1.0
+        ports:
+        - containerPort: 80
+        env:
+        - name: SQL_USER
+          value: sqladminrDz2161
+        - name: SQL_PASSWORD
+          value: iK8rk1Vg2
+        - name: SQL_SERVER
+          value: sqlserverrdz2161.database.windows.net
+        - name: SQL_DBNAME
+          value: mydrivingDB
+        # - name: PORT
+        #   value: 80

@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: poi
+spec:
+  selector:
+    matchLabels:
+      run: poi
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: poi
+    spec:
+      containers:
+      - name: poi
+        image: registryrdz2161.azurecr.io/poi:1.0
+        ports:
+        - containerPort: 80
+        env:
+        - name: SQL_USER
+          value: sqladminrDz2161
+        - name: SQL_PASSWORD
+          value: iK8rk1Vg2
+        - name: SQL_SERVER
+          value: sqlserverrdz2161.database.windows.net
+        - name: SQL_DBNAME
+          value: mydrivingDB
+        # - name: WEB_PORT
+        #   value: 80
+        # - name: WEB_SERVER_BASE_URI
+        #   value: "http://0.0.0.0"
+        # - name: ASPNETCORE_ENVIRONMENT
+        #   value: "Development"
+        # - name: CONFIG_FILES_PATH
+        #   value: "/secrets"
