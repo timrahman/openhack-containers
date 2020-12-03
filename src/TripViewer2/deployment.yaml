@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tripviewer2
+  namespace: web
+spec:
+  selector:
+    matchLabels:
+      run: tripviewer2
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: tripviewer2
+    spec:
+      nodeSelector:
+        "beta.kubernetes.io/os": linux
+      containers:
+      - name: tripviewer2
+        image: registryrdz2161.azurecr.io/tripviewer2:1.0
+        ports:
+        - containerPort: 80
+        env:
+        - name: USERPROFILE_API_ENDPOINT
+          value: "http://userprofile-service.api.svc.cluster.local"
+        - name: TRIPS_API_ENDPOINT
+          value: "http://trips-service.api.svc.cluster.local"
+        - name: WCF_ENDPOINT
+          value: "http://wcf-service.wcfns.svc.cluster.local"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wcf-service
+  namespace: wcfns
+spec:
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: 80
+  selector:
+    run: wcf
+  type: ClusterIP

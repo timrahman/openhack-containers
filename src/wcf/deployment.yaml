@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wcf
+  namespace: wcfns
+spec:
+  selector:
+    matchLabels:
+      run: wcf
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: wcf
+    spec:
+      nodeSelector:
+        "beta.kubernetes.io/os": windows
+      containers:
+      - name: wcf
+        image: registryrdz2161.azurecr.io/wcfservice:1.0
+        ports:
+        - containerPort: 80
